@@ -1,0 +1,234 @@
+#!/usr/bin/env python
+import optparse
+import sys
+from collections import defaultdict
+import pickle
+
+def align_IBM1(optns, bitext):
+    #sys.stderr.write("Training IBM Model1 ...\n")
+
+    #sys.stderr.write("Initializing translation prob. to uniform ...\n")
+
+    f_total = defaultdict(int)
+    e_total = defaultdict(int)
+    f_total[None] = 1
+    for (n, (f, e)) in enumerate(bitext):
+        for f_i in set(f):
+            f_total[f_i] += 1
+        for e_j in set(e):
+            e_total[e_j] += 1
+
+    len_f = len(f_total.keys())
+
+    prob_e_f = defaultdict(float)
+    prev_prob_e_f = defaultdict(float)
+    for (n, (f1, e)) in enumerate(bitext):
+        f = [None] + f1
+        for f_i in set(f):
+            for e_j in set(e):
+                prob_e_f[(e_j,f_i)] = 1/float(len_f)
+                prev_prob_e_f[(e_j,f_i)] = 0
+
+
+    #sys.stderr.write("Running the EM algorithm to find translation prob ...\n")
+    converged = 0
+    iteration = 1
+
+    while converged == 0 and iteration <= optns.iters:
+
+        sys.stderr.write("Running iteration num %i...\n" % iteration)
+
+        fe_count = defaultdict(float)
+        norm = defaultdict(float)
+
+        for (n, (f1, e)) in enumerate(bitext):
+            f = [None] + f1
+            for e_j in set(e):
+                for f_i in set(f):
+                    f_total[f_i] = 0
+                    fe_count[(f_i, e_j)] = 0
+
+        #Compute Normalization
+        for (n, (f1, e)) in enumerate(bitext):
+            f = [None] + f1
+
+            for e_j in set(e):
+                norm[e_j] = 0.0
+                for f_i in set(f):
+                    norm[e_j] += prob_e_f[(e_j, f_i)]
+
+            for e_j in set(e):
+                for f_i in set(f):
+                    fe_count[(e_j, f_i)] += float(prob_e_f[(e_j, f_i)])/norm[e_j]
+                    f_total[f_i] += float(prob_e_f[(e_j, f_i)])/norm[e_j]
+
+
+        converged = 1
+        for (n, (f1, e)) in enumerate(bitext):
+            f = [None] + f1
+            for f_i in set(f):
+                for e_j in set(e):
+                    prob_e_f[(e_j, f_i)] = float(fe_count[(e_j, f_i)])/f_total[f_i]
+
+                    #Convergence Check
+                    if converged == 1 and abs(prob_e_f[(e_j, f_i)] - prev_prob_e_f[(e_j, f_i)]) < 0.00000001:
+                        converged = 0
+                    prev_prob_e_f[(e_j, f_i)] = prob_e_f[(e_j, f_i)]
+
+        iteration += 1
+
+
+    pickle.dump(prob_e_f, open("trans_probabilities/translationProb_IBM1_withNull.p","wb"))
+    return prob_e_f
+
+
+def align_IBM2(optns, bitext, prob_e_f):
+
+    prev_prob_e_f = defaultdict(float)
+
+    f_count = defaultdict(int)
+    e_count = defaultdict(int)
+    aln = defaultdict(lambda: defaultdict(lambda: defaultdict(lambda: defaultdict(lambda: float))))
+
+    #sys.stderr.write("Initializing translation prob. to uniform ...\n")
+    f_count[None] = 1
+    for (n, (f, e)) in enumerate(bitext):
+        for f_i in f:
+            f_count[f_i] += 1
+        for e_j in e:
+            e_count[e_j] += 1
+
+    len_f = len(f_count.values())
+    for (n, (f1, e)) in enumerate(bitext):
+        le = len(e)
+        lf = len(f1)
+
+        f = [None] + f1
+        for i in range(0,lf + 1):
+            for j in range(1, le + 1):
+                aln[i][j][le][lf] = 1/float(lf+1)
+
+        for f_i in f:
+            for e_j in e:
+                prob_e_f[(e_j,f_i)] = 1/float(len_f)
+                prev_prob_e_f[(e_j,f_i)] = 0.0
+
+
+    #sys.stderr.write("Running the EM algorithm to find translation prob ...\n")
+    converged = 0
+    iteration = 1
+
+    while converged != 1 and iteration <= optns.iters:
+
+        sys.stderr.write("Running iteration num %i...\n" % iteration)
+
+        count_t = defaultdict(lambda: defaultdict(float))
+        total_t = defaultdict(float)
+
+        count_a = defaultdict(lambda: defaultdict(lambda: defaultdict(lambda: defaultdict(lambda: 0.0))))
+        total_a = defaultdict(lambda: defaultdict(lambda: defaultdict(lambda: 0.0)))
+        norm = defaultdict(float)
+
+        for (n, (f1, e)) in enumerate(bitext):
+            le = len(e)
+            lf = len(f1)
+
+            f = [None] + f1
+
+            # Compute Normalization --
+            for j in range(1,le+1):
+                norm[e[j-1]] = 0
+                for i in range(0,lf+1):
+                    norm[e[j-1]] += prob_e_f[(e[j-1], f[i])] * aln[i][j][le][lf]
+
+            # Count collection --
+            for j in range(1,le+1):
+                for i in range(0,lf+1):
+                    cnt = (prob_e_f[(e[j-1], f[i])] * aln[i][j][le][lf]) / float(norm[e[j-1]])
+                    count_t[e[j-1]][f[i]] += cnt
+                    total_t[f[i]] += cnt
+                    count_a[i][j][le][lf] += cnt
+                    total_a[j][le][lf] += cnt
+
+
+
+        # Estimate Probabilities --
+        aln = defaultdict(lambda: defaultdict(lambda: defaultdict(lambda: defaultdict(lambda: 0.0))))
+        #prob_e_f = defaultdict(lambda: defaultdict(lambda: 0.0))
+        for (n, (f1, e)) in enumerate(bitext):
+            f = [None] + f1
+            for f_i in f:
+                for e_j in e:
+                    prob_e_f[(e_j,f_i)] = 0.0
+
+
+        # New Translation Prob. & # New alignment Prob.
+        converged = 1
+        for (n, (f, e)) in enumerate(bitext):
+            le = len(e)
+            lf = len(f)
+
+            f = [None] + f
+
+            for e_j in e:
+                for f_i in f:
+                    prob_e_f[(e_j,f_i)] = count_t[e_j][f_i]/float(total_t[f_i])
+                    if abs(prev_prob_e_f[(e_j,f_i)] - prob_e_f[(e_j,f_i)]) > 0.00000001:
+                        converged = 0
+                    prev_prob_e_f[(e_j,f_i)] = prob_e_f[(e_j,f_i)]
+
+            for i in range(0, lf+1):
+                for j in range(1, le+1):
+                    aln[i][j][le][lf] = count_a[i][j][le][lf]/float(total_a[j][le][lf])
+
+        iteration += 1
+
+        #pickle.dump(prob_e_f,open("trans_probabilities/translationProb_IBM2_1000.p","wb"))
+        return prob_e_f
+
+
+
+if __name__ == "__main__":
+    optparser = optparse.OptionParser()
+    optparser.add_option("-d", "--data", dest="train", default="data/hansards", help="Data filename prefix (default=data)")
+    optparser.add_option("-e", "--english", dest="english", default="e", help="Suffix of English filename (default=e)")
+    optparser.add_option("-f", "--french", dest="french", default="f", help="Suffix of French filename (default=f)")
+    optparser.add_option("-t", "--threshold", dest="threshold", default=0.5, type="float", help="Threshold for aligning with Dice's coefficient (default=0.5)")
+    optparser.add_option("-n", "--num_sentences", dest="num_sents", default=sys.maxint, type="int", help="Number of sentences to use for training and alignment")
+    optparser.add_option("-i", "--iterations", dest="iters", default=25, type="int", help="Number of iterations for EM algorithm")
+    optparser.add_option("-x", "--f2e", dest="f2e", default=1, type="int", help="Perform EM for french to english")
+    optparser.add_option("-y", "--e2f", dest="e2f", default=1, type="int", help="Perform EM for english to french")
+
+    (opts, _) = optparser.parse_args()
+    f_data = "%s.%s" % (opts.train, opts.french)
+    e_data = "%s.%s" % (opts.train, opts.english)
+
+    # Do Pre-processing
+    bi_text = [[sentence.lower().strip().split() for sentence in pair] for pair in zip(open(f_data), open(e_data))[:opts.num_sents]]
+    if opts.f2e == 1:
+        prob_f2e1 = align_IBM1(opts, bi_text)
+    else:
+        prob_f2e1 = pickle.load("")
+
+    sys.stderr.write("Using IBM1 Trans. Prob. in IBM2...")
+    opts.iters = 4 #For IBM2
+    prob_f2e2 = align_IBM2(opts, bi_text, prob_f2e1)
+
+    if opts.e2f == 1:
+        bi_text_rev = [[sentence.lower().strip().split() for sentence in pair] for pair in zip(open(e_data), open(f_data))[:opts.num_sents]]
+        prob_e2f1 = align_IBM1(opts,bi_text_rev)
+    else:
+        prob_e2f1 = pickle.load("")
+
+    sys.stderr.write("Using IBM1 Trans. Prob. in IBM2...")
+    prob_f2e2 = align_IBM2(opts, bi_text_rev, prob_e2f1)
+
+
+    # Printing the alignments
+    for (f_sen, e_sen) in bi_text:
+        for (i, f_w) in enumerate(f_sen):
+            for (j, e_w) in enumerate(e_sen):
+                if prob_f2e2[(e_w, f_w)] >= opts.threshold and prob_f2e2[(f_w, e_w)] >= opts.threshold:
+                    sys.stdout.write("%i-%i " % (i,j))
+        sys.stdout.write("\n")
+
