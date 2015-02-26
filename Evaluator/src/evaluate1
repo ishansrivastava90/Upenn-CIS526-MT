@@ -1,0 +1,64 @@
+#!/usr/bin/env python
+import argparse
+import sys
+from itertools import islice
+
+""" Generator for the sentences """
+def sentences(opts):
+    with open(opts.input) as f:
+        for pair in f:
+            yield [sentence.strip().split() for sentence in pair.split(' ||| ')]
+
+
+""" Matches common words in lists and
+    return counts
+"""
+def word_matches(h, ref_set):
+    return sum(1 for word in h if word in ref_set )
+
+
+def precision(h,ref_set):
+    return float(word_matches(h,ref_set))/len(h)
+
+def recall(h, ref_set):
+    return float(word_matches(h, ref_set))/len(ref_set)
+
+def score(l1, l2):
+    return 1 if l1 > l2 else ( -1 if l1 < l2 else 0 )
+
+
+"""
+    Evaluates the score using lvalues for both translations
+    using Precision and Recall metric
+"""
+
+def evaluate(opts):
+
+    for h1, h2, ref in islice(sentences(opts), opts.num_sentences):
+        ref_set = set(ref)
+
+        p = precision(h1, ref_set)
+        r = recall(h1, ref_set)
+        l1 = -1* sys.maxint
+        if r != 0 and p != 0:
+            l1 = float(p * r)/( (1-opts.alpha)*r + opts.alpha * p)
+
+        p = precision(h2, ref_set)
+        r = recall(h2, ref_set)
+        l2 = -1* sys.maxint
+        if r != 0 and p != 0:
+            l2 = float(p * r)/( (1-opts.alpha)*r + opts.alpha * p)
+
+        print score(l1, l2)
+    return
+
+""" Main driver function """
+if __name__=="__main__":
+    # Argument Parser for the script
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-i', '--input', default='../data/hyp1-hyp2-ref', help='input file (default ../data/hyp1-hyp2-ref)')
+    parser.add_argument('-n', '--num_sentences', default=sys.maxint, type=int, help='Number of hypothesis pairs to evaluate')
+    parser.add_argument('-a', '--alpha', default=0.5, type=float, help='Alpha values for precision and recall')
+    opts = parser.parse_args()
+
+    evaluate(opts)
