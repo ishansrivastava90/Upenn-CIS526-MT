@@ -7,7 +7,7 @@ def word_matches(h, ref):
  
 def main():
     parser = argparse.ArgumentParser(description='Evaluate translation hypotheses.')
-    parser.add_argument('-i', '--input', default='data/hyp1-hyp2-ref',
+    parser.add_argument('-i', '--input', default='../data/hyp1-hyp2-ref',
             help='input file (default data/hyp1-hyp2-ref)')
     parser.add_argument('-n', '--num_sentences', default=None, type=int,
             help='Number of hypothesis pairs to evaluate')
