@@ -116,12 +116,14 @@ def evaluate(opts):
     for h1, h2, ref in islice(sentences(opts), opts.num_sentences):
 
         ref_set = list(OrderedDict.fromkeys(ref))
+        h1_set = list(OrderedDict.fromkeys(h1))
+        h2_set = list(OrderedDict.fromkeys(h2))
 
         # Generating all-grams ( 1,2,3,4 - skip grams )
         all_grams = generate_all_grams(ref_set)
 
-        score1 = float(score_partial(h1, all_grams) + score_full(h1, all_grams) + score_ordered(h1, all_grams))/3
-        score2 = float(score_partial(h2, all_grams) + score_full(h2, all_grams) + score_ordered(h2, all_grams))/3
+        score1 = float(score_partial(h1_set, all_grams) + score_full(h1_set, all_grams) + score_ordered(h1_set, all_grams))/3
+        score2 = float(score_partial(h2_set, all_grams) + score_full(h2_set, all_grams) + score_ordered(h2_set, all_grams))/3
 
         print score(score1, score2)
 
@@ -138,3 +140,12 @@ if __name__=="__main__":
     opts = parser.parse_args()
 
     evaluate(opts)
+
+
+"""
+    Analysis:
+    ---------
+
+    1) Tried all n-gram from 1 to 4 simultaneously without stemming and evaluated the score
+
+"""
