@@ -37,14 +37,14 @@ def evaluate(opts):
     for h1, h2, ref in islice(sentences(opts), opts.num_sentences):
         ref_set = set(ref)
 
-        p = precision(h1, ref_set)
-        r = recall(h1, ref_set)
+        p = precision(set(h1), ref_set)
+        r = recall(set(h1), ref_set)
         l1 = -1* sys.maxint
         if r != 0 and p != 0:
             l1 = float(p * r)/( (1-opts.alpha)*r + opts.alpha * p)
 
-        p = precision(h2, ref_set)
-        r = recall(h2, ref_set)
+        p = precision(set(h2), ref_set)
+        r = recall(set(h2), ref_set)
         l2 = -1* sys.maxint
         if r != 0 and p != 0:
             l2 = float(p * r)/( (1-opts.alpha)*r + opts.alpha * p)
@@ -62,3 +62,10 @@ if __name__=="__main__":
     opts = parser.parse_args()
 
     evaluate(opts)
+
+
+"""
+    Analysis:
+    ----------
+    Better results with alpha  ~ 0.8. More weightage to precision
+"""
