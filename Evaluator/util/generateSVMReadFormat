@@ -1,0 +1,65 @@
+#!/usr/bin/env python
+
+import argparse
+import sys
+
+def generateSvmTrainFile(feature_file, label_file, out_file, train_len):
+    # Reading the features
+    ffeatures = open(feature_file, "r")
+
+    # Reading the labels
+    flabels = open(label_file, "r")
+
+    features = ffeatures.readlines()
+    labels = flabels.readlines()
+
+    fsvm = open(out_file, "w")
+    for i in range(0,train_len):
+        cur_feature = features[i].strip().split()
+        str_feature = ""
+        for j in range(1,len(cur_feature)+1):
+            str_feature += " "+str(j)+":"+str(cur_feature[j-1])
+        fsvm.write(str(labels[i].strip())+str_feature+"\n")
+
+    fsvm.close()
+    ffeatures.close()
+    flabels.close()
+
+    return
+
+def generateSvmTestFile(feature_file, label_file, out_file):
+    # Reading the features
+    ffeatures = open(feature_file, "r")
+
+    features = ffeatures.readlines()
+    test_features = features[20000:25586]
+
+    fsvm = open(out_file, "w")
+    for i in range(0,len(test_features)):
+        cur_feature = test_features[i].strip().split()
+        str_feature = ""
+        for j in range(1,len(cur_feature)+1):
+            str_feature += " "+str(j)+":"+str(cur_feature[j-1])
+        fsvm.write(str(0)+str_feature+"\n")
+
+    fsvm.close()
+    ffeatures.close()
+
+    return 
+
+
+
+if __name__=="__main__":
+
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-i', '--input', default='../data/hyp1-hyp2-ref', help='input file (default ../data/hyp1-hyp2-ref)')
+    parser.add_argument('-n', '--num_sentences', default=sys.maxint, type=int, help='Number of hypothesis pairs to evaluate')
+    parser.add_argument('-a', '--alpha', default=0.5, type=float, help='Alpha values for precision and recall')
+    parser.add_argument('-o', '--out', default='../data/svm-train',  help='output file (default ../data/svm-train')
+    opts = parser.parse_args()
+
+    feature_file = "/home1/i/ishan/CIS526-MachineTranslation/Assignments/Assignment3/Evaluator/data/features"
+    label_file = "/home1/i/ishan/CIS526-MachineTranslation/Assignments/Assignment3/Evaluator/data/dev.answers"
+    generateSvmTrainFile(feature_file, label_file, opts.out, 20000)
+    #generateSvmTestFile(feature_file, label_file, opts.out)
+   

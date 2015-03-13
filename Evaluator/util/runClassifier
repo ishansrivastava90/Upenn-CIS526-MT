@@ -1,0 +1,53 @@
+#!/usr/bin/env python
+
+import sys
+sys.path.append("/project/cis/nlp/tools/libsvm-3.16/python")
+from svmutil import *
+
+def run_classifier(train_file, test_file):
+    #Reading the Train data
+    (y_train, x_train) = svm_read_problem(train_file)
+    y_train1 = [int(y) for y in y_train]
+    
+    x_train2 = []
+    y_train2 = []
+    for i in range(0,len(y_train1)):
+	if y_train1[i] == 1 or y_train1[i] == -1:
+	    y_train2.append(y_train1[i])
+	    x_train2.append(x_train[i])
+
+
+    # Counting the label occurence per cent
+    v1 = float(y_train1.count(-1))/len(y_train1)
+    v2 = float(y_train1.count(0))/len(y_train1)
+    v3 = float(y_train1.count(1))/len(y_train1)
+
+    print v1
+    print v2
+    print v3
+    w1 = float(v2+v3)/(v1+v2+v3)
+    w2 = float(v1+v3)/(v1+v2+v3)
+    w3 = float(v1+v2)/(v1+v2+v3)
+
+    #Training the problem
+    prob = svm_problem(y_train1, x_train)
+    model = svm_train(prob, "-s 0 -g 0.9 -c 0.8")
+    print model
+
+    #Prediction for Test data
+    (y_test, x_test) = svm_read_problem(test_file)
+    y_test = [int(y) for y in y_test]
+    y_test1 = [0]*len(y_train1) + y_test	
+
+    (p_labels, p_accuracy, p_values) = svm_predict(y_train1, x_train, model)#, " -b 1")
+    
+    for l in p_labels:
+	print l
+
+    return 
+
+if __name__=="__main__":
+    
+    train_file ="/home1/i/ishan/CIS526-MachineTranslation/Assignments/Assignment3/Evaluator/data/svm-train"
+    test_file = "/home1/i/ishan/CIS526-MachineTranslation/Assignments/Assignment3/Evaluator/data/svm-test"
+    run_classifier(train_file, test_file)
