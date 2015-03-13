@@ -5,6 +5,7 @@ import sys, os
 from itertools import islice
 from collections import namedtuple
 from collections import OrderedDict
+from nltk.stem.porter import *
 
 sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'util'))
 import generateSkipGrams
@@ -35,7 +36,12 @@ def score_partial(h, all_grams):
                 if gram[k] in h:
                     partial_score += 1
                     break
+        #sys.stderr.write("i=%s\n" %i)
+        #l = len(n_grams)
+        #sys.stderr.write("len=%s\n" %l)
+
         tot_ngrams += len(n_grams)
+        #print n_grams
 
     return float(partial_score)/tot_ngrams
 
@@ -89,22 +95,44 @@ def score(l1, l2):
 
 
 def generate_all_grams(ref_set):
+
     # Generating 2 skip unigrams
     grams1 = generateSkipGrams.gen_k_skip_ngrams(ref_set, 2, 1)
+    #grams1 =[]
 
     # Generating 2 skip bi-grams
     grams2 = generateSkipGrams.gen_k_skip_ngrams(ref_set, 2, 2)
-
+    #grams2 = []
     # Generating 1 skip tri-grams
     grams3 = generateSkipGrams.gen_k_skip_ngrams(ref_set, 1, 3)
-
+    #grams3 =[]
     # Generating 1 skip 4-grams
     grams4 = generateSkipGrams.gen_k_skip_ngrams(ref_set, 1, 4)
+    #grams4 =[]
+    #print grams4
+    # if len(grams4) == 0:
+    #     grams3 = generateSkipGrams.gen_k_skip_ngrams(ref_set, 1, 3)
+    #     if len(grams3) == 0:
+    #         grams2 = generateSkipGrams.gen_k_skip_ngrams(ref_set, 2, 2)
+    #         if len(grams2) == 0:
+    #             grams1 = generateSkipGrams.gen_k_skip_ngrams(ref_set, 2, 1)
+
 
     all_grams_tuple = namedtuple("all_grams","grams1, grams2, grams3, grams4")
     all_grams = all_grams_tuple(grams1, grams2, grams3, grams4)
 
     return all_grams
+
+def stem_with_exception(l):
+    stemmer = PorterStemmer()
+    l_stemmed = l[:]
+    for x in l:
+        try:
+            l_stemmed.append(stemmer.stem(x))
+        except UnicodeDecodeError:
+            l_stemmed.append(x)
+
+    return l_stemmed
 
 """
     Evaluates the score using lvalues for both translations
@@ -113,20 +141,43 @@ def generate_all_grams(ref_set):
 
 def evaluate(opts):
 
+    s_no=0
+    f = open("features_test","w")
     for h1, h2, ref in islice(sentences(opts), opts.num_sentences):
+        #sys.stderr.write("Evaluating for sentence =%s\n" %s_no)
+	if s_no < 20000:
+	    s_no+=1
+	    continue
 
-        ref_set = list(OrderedDict.fromkeys(ref))
-        h1_set = list(OrderedDict.fromkeys(h1))
-        h2_set = list(OrderedDict.fromkeys(h2))
+        # Stemming
+        ref_stemmed = stem_with_exception(ref)
+        h1_stemmed = stem_with_exception(h1)
+        h2_stemmed = stem_with_exception(h2)
+
+        ref_set = list(OrderedDict.fromkeys(ref_stemmed))
+        #print ref_set
+        h1_set = list(OrderedDict.fromkeys(h1_stemmed))
+        h2_set = list(OrderedDict.fromkeys(h2_stemmed))
 
         # Generating all-grams ( 1,2,3,4 - skip grams )
         all_grams = generate_all_grams(ref_set)
 
-        score1 = float(score_partial(h1_set, all_grams) + score_full(h1_set, all_grams) + score_ordered(h1_set, all_grams))/3
-        score2 = float(score_partial(h2_set, all_grams) + score_full(h2_set, all_grams) + score_ordered(h2_set, all_grams))/3
+        sc_p1 = score_partial(h1_set, all_grams)
+        sc_f1 = score_full(h1_set, all_grams)
+        sc_o1 = score_ordered(h1_set, all_grams)
 
-        print score(score1, score2)
+        sc_p2 = score_partial(h1_set, all_grams)
+        sc_f2 = score_full(h1_set, all_grams)
+        sc_o2 = score_ordered(h1_set, all_grams)
 
+
+        f.write(str(sc_p1)+" " +str(sc_f1) +" "+str(sc_o1)+" "+str(sc_p2)+" " +str(sc_f2) +" "+str(sc_o2)+"\n" )
+        #score1 = float(score_partial(h1_set, all_grams) + score_full(h1_set, all_grams) + score_ordered(h1_set, all_grams))/3
+        #score2 = float(score_partial(h2_set, all_grams) + score_full(h2_set, all_grams) + score_ordered(h2_set, all_grams))/3
+
+        #print score(score1, score2)
+        s_no+=1
+    f.close()
 
     return
 
@@ -146,6 +197,8 @@ if __name__=="__main__":
     Analysis:
     ---------
 
-    1) Tried all n-gram from 1 to 4 simultaneously without stemming and evaluated the score
-
+    1) Tried all n-gram from 1 to 4 simultaneously without stemming and evaluated the score - 0.497106
+    2) Tried individual n-grams. Performance in increasing order 4-gram, 3-gram, 2-gram, 1_gram
+    3) Tried all n-grams + stemmed n-grams - 0.503481
+ 
 """
