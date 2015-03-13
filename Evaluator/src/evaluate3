@@ -1,0 +1,168 @@
+#!/usr/bin/env python
+import argparse
+import sys, os
+from collections import namedtuple
+from nltk import *
+import math
+
+sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'util'))
+import matching
+import stemming
+import synonyms
+
+"""
+Approach - Description - METEOR
+1) Unigram Metric
+    1.1) Match - Extended with stemming.py and synonyms
+    1.2) Chunking Penalty
+    1.3) Precision and Recall based f-mean metric
+2) Bigram Metric
+    2.1) Exact bigram match count
+3) Trigram Metric
+    3.1) Exact trigram match count
+
+4) Weighted Score - Combination of above metrics
+    4.1) Weights of trigram & bigram equal and less than unigram
+"""
+
+""" Generator for the sentences """
+def sentences(opts):
+    with open(opts.input) as f:
+        for pair in f:
+            yield [sentence.strip().split() for sentence in pair.split(' ||| ')]
+
+
+def precision(h,ref):
+    return float(matching.unigram_matches_extended(h,ref))/len(h)
+
+def recall(h, ref):
+    return float(matching.unigram_matches_extended(h,ref))/len(ref)
+
+def label(l1, l2):
+    return 1 if l1 > l2 else ( -1 if l1 < l2 else 0 )
+
+
+def find_chunks(h, ref):
+    ref_stemmed = stemming.stem_lists(ref)
+
+    chunk = 0
+    prev_ind = -1
+    for word in h:
+        word_stemmed = stemming.stem_with_exception(word)
+        ind = -1
+        if word in ref:
+            ind = ref.index(word)
+        elif word_stemmed  in ref_stemmed:
+            ind = ref_stemmed.index(word_stemmed)
+        #else:
+            #word_syns = synonyms.
+        # TODO Add synonyms
+
+        if prev_ind != -1:
+            if ind ==-1 or ind != prev_ind + 1:
+                chunk += 1
+        prev_ind = ind
+
+    return chunk
+
+def unigram_metric(h, ref, opts):
+
+    p = precision(h, ref)
+    r = recall(h, ref)
+    u_metric = 0
+    if r != 0 and p != 0:
+        chunking_penalty = (1 - opts.gamma * ((float(find_chunks(h, ref))/matching.unigram_matches_extended(h,ref))**opts.beta))
+        u_metric = chunking_penalty * float(p * r)/( (1-opts.alpha)*r + opts.alpha * p)
+
+    return u_metric
+
+def bigram_metric(h, ref, opts):
+    all_grams_tuple = namedtuple("all_grams","grams1, grams2, grams3, grams4")
+    ref_bigrams = all_grams_tuple([], bigrams(ref),[], [])
+
+    #TODO Consider weighted combination of match_full and match_ordered
+    return matching.match_exact(h, ref_bigrams)
+
+def trigram_metric(h, ref, opts):
+    all_grams_tuple = namedtuple("all_grams","grams1, grams2, grams3, grams4")
+    ref_trigrams = all_grams_tuple([],[], trigrams(ref), [])
+
+    #TODO Consider weighted combination of match_full and match_ordered
+    return matching.match_exact(h, ref_trigrams)
+
+"""
+    Calculates the exponential length penalty based on how longer or
+    shorter the hypotheses statements are compared to the
+    reference statement
+"""
+def calc_len_penalty(h,ref):
+    lref = len(ref)
+    lh = len(h)
+    if lh > lref:
+        e = 1 - float(lh)/lref
+    else:
+        e = 1 - float(lref)/lh
+
+    return math.exp(e)
+
+"""
+    Evaluates the score using lvalues for both translations
+    using Precision and Recall metric
+"""
+
+def evaluate(opts):
+
+    for h1, h2, ref in islice(sentences(opts), opts.num_sentences):
+        ref_set = list(OrderedDict.fromkeys(ref))
+        h1_set = list(OrderedDict.fromkeys(h1))
+        h2_set = list(OrderedDict.fromkeys(h2))
+
+        l1 = calc_len_penalty(h1, ref) * opts.weight_u * unigram_metric(h1, ref, opts)
+        if opts.include_bigram:
+             l1+= opts.weight_b * bigram_metric(h1, ref, opts)
+        if opts.include_trigram:
+             l1+= opts.weight_t * trigram_metric(h1, ref, opts)
+
+        l2 = calc_len_penalty(h2, ref) * opts.weight_u * unigram_metric(h2, ref, opts)
+        if opts.include_bigram:
+             l2+= opts.weight_b * bigram_metric(h2, ref, opts)
+        if opts.include_trigram:
+             l2+= opts.weight_t * trigram_metric(h2, ref_set, opts)
+
+
+        print label(l1, l2)
+    return
+
+""" Main driver function """
+if __name__=="__main__":
+    # Argument Parser for the script
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-i', '--input', default='../data/hyp1-hyp2-ref', help='input file (default ../data/hyp1-hyp2-ref)')
+    parser.add_argument('-n', '--num_sentences', default=sys.maxint, type=int, help='Number of hypothesis pairs to evaluate')
+    parser.add_argument('-a', '--alpha', default=0.5, type=float, help='Alpha values for precision and recall')
+    parser.add_argument('-b', '--beta', default=0.5, type=float, help='Tunable parameter beta for chunking penalty')
+    parser.add_argument('-g', '--gamma', default=0.5, type=float, help='Tunable parameter gamma for chunking penalty')
+
+    parser.add_argument('-ib', '--include_bigram', default=False, type=bool, help='Include bigram Metric')
+    parser.add_argument('-it', '--include_trigram', default=False, type=bool, help='Include trigram Metric')
+
+    parser.add_argument('-wu', '--weight_u', default=0.8, type=float, help='Weight for unigram Metric')
+    parser.add_argument('-wb', '--weight_b', default=0.1, type=float, help='Weight for bigram Metric')
+    parser.add_argument('-wt', '--weight_t', default=0.1, type=float, help='Weight for trigram Metric')
+
+    opts = parser.parse_args()
+
+    evaluate(opts)
+
+
+"""
+    Analysis:
+    ----------
+    1) Just Unigrams with Stemming and chunking penalty                                                              - 0.519
+    2) Unigrams with Stemming and chunking penalty + Bigrams + Trigrams (Default Weights)                            - 0.5199
+    3) Unigrams with Stemming and chunking penalty + Bigrams + Trigrams (wu 0.9, wb & wt 0.05 each)                  - 0.52045
+    4) Unigrams with Stemming, Synonyms and chunking penalty + Bigrams + Trigrams (wu 0.9, wb & wt 0.05 each)
+                                                                    + Sen Length Penalty                             - 0.52014
+
+
+"""

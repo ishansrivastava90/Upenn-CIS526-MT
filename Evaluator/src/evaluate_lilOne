@@ -1,0 +1,226 @@
+#!/usr/bin/env python
+import argparse # optparse is deprecated
+from itertools import islice # slicing for iterators
+#import sys
+from nltk.stem.porter import *
+from nltk.corpus import wordnet as wn
+from nltk import trigrams, bigrams
+#from nltk.util import ngrams
+#import numpy
+import math
+ 
+# def word_matches(h, ref):
+#     return sum(1 for w in h if w in ref)
+
+def find_exact_matches(h, ref):
+    bitvec_ref = [False]*len(ref)
+    bitvec_h = [False] * len(h)
+    mapped = 0
+    for i, w in enumerate(h):
+        for j, r in enumerate(ref):
+            if not bitvec_ref[j] and w == r:
+                mapped += 1
+                bitvec_ref[j] = True
+                bitvec_h[i] = True
+                break
+    return (mapped, bitvec_h, bitvec_ref)
+
+def find_stemmed_matches(h, ref, bitvec_h, bitvec_ref):
+    mapped = 0
+    for (i, w) in enumerate(h):
+        if not bitvec_h[i]:
+            for (j, r) in enumerate(ref):
+                if not bitvec_ref[j]:
+                    if h[i] == ref[j]:
+                        mapped += 1
+                        bitvec_ref[j] = True
+                        bitvec_h[i] = True
+                        break
+    return (mapped, bitvec_h, bitvec_ref)
+
+def find_stem(sent):
+    stemmer = PorterStemmer()
+    stem = [stemmer.stem(w) for w in sent]
+    return stem
+
+def find_synonyms(sent):
+    syn = []
+    for w in sent:
+        for sss in wn.synsets(w):
+            for sset in sss.lemmas:
+                syn.append([sset])
+    return syn
+
+def find_synset_matches(h, ref, bitvec_h, bitvec_ref):
+    mapped = 0
+    for (i, w) in enumerate(h):
+        if not bitvec_h[i]:
+            for (j, r) in enumerate(ref):
+                if not bitvec_ref[j]:
+                    if h[i] in ref[j]:
+                        mapped += 1
+                        bitvec_ref[j] = True
+                        bitvec_h[i] = True
+                        break
+    return (mapped, bitvec_h, bitvec_ref)
+
+def compare_synset(h, ref):
+    for synset in h:
+        if synset in ref:
+            return True
+    return False
+
+def new_chunk(h, ref, h_stem, ref_stem, h_syn, ref_syn):
+
+    bitvec= [0]*len(ref)
+    bitvec_h= [0]*len(h)
+    prev = -1
+    c= 0
+    for indh in xrange(0,len(h)):
+        if bitvec_h[indh] ==0:
+            for indx in xrange(0,len(bitvec)):
+                if bitvec[indx] != 1 and (h[indh]== ref[indx] or h_stem[indh] == ref_stem[indx] or compare_synset(h_syn[indh],ref_syn[indx])):
+                    bitvec[indx]=1
+                    bitvec_h[indh] = 1
+                    if indx == prev+1 or prev == -1:
+                        prev = indx
+                        break
+                    else:
+                        prev = indx
+                        c += 1
+                        if indh == len(h)-1:
+                            c +=1
+                        break
+
+    if 1 not in bitvec:
+        return 0 
+    elif 1 in bitvec and c==0:
+        return 1
+    else:
+        return c   
+
+def ngram_match(h,ref):
+
+    #find bigram matches
+    bigram_h = bigrams(" ".join(h))
+    bigram_ref = bigrams(" ".join(ref))
+
+    mapped_bigrams = 0
+    for b in set(bigram_h):
+        if b in set(bigram_ref):
+            mapped_bigrams += 1
+    
+    #find trigram mathces
+    trigram_h = trigrams(" ".join(h))
+    trigram_ref = trigrams(" ".join(ref))
+
+    mapped_trigrams = 0
+    for t in set(trigram_h):
+        if t in set(trigram_ref):
+            mapped_trigrams += 1
+
+    recall_bi = mapped_bigrams / float(len(bigram_ref))
+    recall_tri = mapped_trigrams / float(len(trigram_ref))
+
+    return (recall_bi + recall_tri)
+
+def length_penalty(h,ref):
+    c = len(h)
+    r = len(ref)
+
+    if c<r:
+        return math.exp(1-(r/float(c)))
+    elif c>r:
+        return math.exp(1-(c/float(r)))
+    else:
+        return 1
+
+
+
+def main():
+    parser = argparse.ArgumentParser(description='Evaluate translation hypotheses.')
+    parser.add_argument('-i', '--input', default='../data/hyp1-hyp2-ref', help='input file (default data/hyp1-hyp2-ref)')
+    parser.add_argument('-n', '--num_sentences', default=None, type=int, help='Number of hypothesis pairs to evaluate')
+    parser.add_argument('-a', '--alpha', default=0.82, type=float, help='Fmean weight')
+    parser.add_argument('-b', '--beta', default=1.0, type=float, help='METEOR penalty parameter')
+    parser.add_argument('-g', '--gamma', default=0.21, type=float, help='METEOR penalty parameter')
+    # note that if x == [1, 2, 3], then x[:None] == x[:] == x (copy); no need for sys.maxint
+    opts = parser.parse_args()
+ 
+    # we create a generator and avoid loading all sentences into a list
+    def sentences():
+        with open(opts.input) as f:
+            for pair in f:
+                yield [sentence.lower().strip().split() for sentence in pair.split(' ||| ')]
+ 
+    # note: the -n option does not work in the original code
+    for h1, h2, ref in islice(sentences(), opts.num_sentences):
+
+        #find exact matches
+        (h1_exact_matches, bitvec_h1, bitvec_ref1) = find_exact_matches(h1, ref)
+        (h2_exact_matches, bitvec_h2, bitvec_ref2) = find_exact_matches(h2, ref)
+
+        #find stemmed matches
+        h1_stem = find_stem(h1)
+        ref_stem = find_stem(ref)
+        h2_stem = find_stem(h2)
+
+        (h1_stemmed_matches, bitvec_h1, bitvec_ref1) = find_stemmed_matches(h1_stem, ref_stem, bitvec_h1, bitvec_ref1)
+        (h2_stemmed_matches, bitvec_h2, bitvec_ref2) = find_stemmed_matches(h2_stem, ref_stem, bitvec_h2, bitvec_ref2)
+
+        # find synset matches
+        h1_syn = find_synonyms(h1)
+        h2_syn = find_synonyms(h2)
+        ref_syn = find_synonyms(ref)
+        
+        (h1_syn_matches, bitvec_h1, bitvec_ref1) = find_synset_matches(h1, ref_syn, bitvec_h1, bitvec_ref1)
+        (h2_syn_matches, bitvec_h2, bitvec_ref2) = find_synset_matches(h2, ref_syn, bitvec_h2, bitvec_ref2)
+
+        #total mapped unigrams
+        h1_total_matches = h1_exact_matches + h1_stemmed_matches + h1_syn_matches
+        h2_total_matches = h2_exact_matches + h2_stemmed_matches + h2_syn_matches
+
+
+        # calculate precision and recall
+        prec1 = h1_total_matches / float(len(h1))
+        prec2 = h2_total_matches / float(len(h2))
+
+        rec1 = h1_total_matches / float(len(ref))
+        rec2 = h2_total_matches / float(len(ref))
+
+        h1_fmean = (prec1 * rec1) / float(((1 - opts.alpha) * rec1) + (opts.alpha * prec1) + 1)
+        h2_fmean = (prec2 * rec2) / float(((1 - opts.alpha) * rec2) + (opts.alpha * prec2) + 1)
+
+        # Calculate METEOR penalty
+        chunk1 = new_chunk(h1, ref, h1_stem, ref_stem, h1_syn, ref_syn)
+        chunk2 = new_chunk(h2, ref, h2_stem, ref_stem, h2_syn, ref_syn)
+        
+        frag1 = chunk1 / float(h1_total_matches) if h1_total_matches != 0 else 0
+        frag2 = chunk2 / float(h2_total_matches) if h2_total_matches != 0 else 0
+
+        penalty1 = opts.gamma * (frag1 ** opts.beta)
+        penalty2 = opts.gamma * (frag2 ** opts.beta)
+
+        h1_match = (1 - penalty1) * h1_fmean
+        h2_match = (1 - penalty2) * h2_fmean
+
+        #calculate length penalty
+        h1_lp = length_penalty(h1,ref)
+        h2_lp = length_penalty(h2,ref)
+
+        #find bigram and trigram pairs between hypothesis and reference translations
+        #take the weighted sum of METEOR score and recall values of bigram and trigram
+
+        h1_match = (0.7 * (h1_match*h1_lp))+ (0.21 * (ngram_match(h1, ref)))
+        h2_match = (0.7 * (h2_match*h2_lp))+ (0.21 * (ngram_match(h2, ref)))
+
+        #use word count as a feature
+
+       
+        print(1 if h1_match > h2_match else # \begin{cases}
+                (0 if h1_match == h2_match
+                    else -1)) # \end{cases}
+ 
+# convention to allow import of this file as a module
+if __name__ == '__main__':
+    main()
