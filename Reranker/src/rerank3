@@ -4,9 +4,11 @@ import optparse
 import sys,os
 
 sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'util'))
+import scoring
 import gen_src_tokens
 import gen_feature
 import gen_translations
+
 
 """
 Analysis:
@@ -22,13 +24,15 @@ def rerank(opts):
                'p(e|f)'     : float(opts.tm1),
                'p_lex(f|e)' : float(opts.tm2),
                'len_d'      : float(opts.ld),
-               'trans_w'    : float(opts.tr)}
+               'trans_w'    : float(opts.tr),
+               'avg_len_d'  : float(opts.av)}
 
     inc_weights = {'len_d'      : True,
                    'p(e)'       : True,
                    'p(e|f)'     : True,
                    'p_lex(f|e)' : True,
-                   'trans_w'    : True }
+                   'trans_w'    : True,
+                   'avg_len_d'  : True}
 
     src_tokens = gen_src_tokens.load_src_tokens(opts.token_file)
     src_sen = [line.split(' ||| ') for line in open(opts.source)]
@@ -38,26 +42,27 @@ def rerank(opts):
     # Pre-processing - Find the count for untranslated word for every sen
     cnt_untranslated = gen_feature.compute_untranslated_all(all_hyps, src_tokens, 100)
 
-    best_translations = gen_translations.gen_best_translations_by_lambda(all_hyps, src_sen, weights, inc_weights, cnt_untranslated)
-    for s in xrange(0, num_sents):
-        try:
-            sys.stdout.write("%s\n" % best_translations[s])
-        except Exception:
-            sys.exit(1)
-
+    # best_translations = gen_translations.gen_best_translations_by_lambda(all_hyps, src_sen, weights, inc_weights, cnt_untranslated)
     # for s in xrange(0, num_sents):
-    #     hyps_for_one_sent = all_hyps[s * 100:s * 100 + 100]
-    #
-    #     if src_sen[s][0] != hyps_for_one_sent[0][0]:
-    #         sys.stderr.write("The s_no on the source sen and translations don't match. Quitting.")
-    #         sys.exit(0)
-    #
-    #     (best_score, best) = scoring.compute_score(hyps_for_one_sent, src_sen[s][1], weights, src_tokens, cnt_untranslated)
-    #
     #     try:
-    #         sys.stdout.write("%s\n" % best)
+    #         sys.stdout.write("%s\n" % best_translations[s])
     #     except Exception:
     #         sys.exit(1)
+
+    for s in xrange(0, num_sents):
+        hyps_for_one_sent = all_hyps[s * 100:s * 100 + 100]
+
+
+        if src_sen[s][0] != hyps_for_one_sent[0][0]:
+            sys.stderr.write("The s_no on the source sen and translations don't match. Quitting.")
+            sys.exit(0)
+
+        (best_score, best) = scoring.compute_score(hyps_for_one_sent, src_sen[s][1], weights, src_tokens, cnt_untranslated, inc_weights)
+
+        try:
+            sys.stdout.write("%s\n" % best)
+        except Exception:
+            sys.exit(1)
 
     return
 
@@ -72,6 +77,7 @@ if __name__=="__main__":
     optparser.add_option("-s", "--tm2", dest="tm2", default=-0.5, type="float", help="Lexical translation model p_lex(f|e) weight")
     optparser.add_option("-L", "--ld", dest="ld", default=-1.0, type="float", help="Relative len difference weight")
     optparser.add_option("-u", "--tr", dest="tr", default=-1.0, type="float", help="Untranslated words weight")
+    optparser.add_option("-a", "--avg", dest="av", default=-1.0, type="float", help="Avg len difference in hypothesis weight")
     optparser.add_option("-f", "--token-file", dest="token_file", default="../data/dev+test.dict", help="Src language word tokens")
     (opts, _) = optparser.parse_args()
 
