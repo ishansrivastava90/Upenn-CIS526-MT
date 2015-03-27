@@ -190,6 +190,7 @@ if __name__=="__main__":
     optparser.add_option("-L", "--ld", dest="ld", default=-1.0, type="float", help="Relative len difference weight")
     optparser.add_option("-u", "--tr", dest="tr", default=-1.0, type="float", help="Untranslated words weight")
     optparser.add_option("-r", "--ref", dest="reference", default="../data/dev.ref", help="Target language reference statements")
+    optparser.add_option("-a", "--avg", dest="av", default=-1.0, type="float", help="Avg len difference in hypothesis weight")
     optparser.add_option("-f", "--token-file", dest="token_file", default="../data/dev+test.dict", help="Src language word tokens")
 
     (opts, _) = optparser.parse_args()
