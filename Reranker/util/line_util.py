@@ -3,6 +3,7 @@
 import sys
 from gen_feature import compute_untranslated
 from gen_feature import compute_len_diff
+from gen_feature import compute_avg_diff
 
 """
 find_intersecting_line:
@@ -38,7 +39,7 @@ def find_intersecting_line(line_steep, lines, lines_done, curr_max_lambda, iter=
 Computes the incline and the offset of a hypothesis
 using features and required things
 """
-def compute_line(hyp, feats, src_sen, lambdas, param, src_tokens):
+def compute_line(hyp, feats, src_sen, lambdas, param, src_tokens, avg_len):
     # Computing Total score => sum(lambda_i * h(x_i))
     tot_score = 0.0
     for feat in feats.split(' '):
@@ -53,6 +54,9 @@ def compute_line(hyp, feats, src_sen, lambdas, param, src_tokens):
     cnt_untranslated = compute_untranslated(hyp, src_tokens)
     tot_score += lambdas['trans_w'] *(-1 * cnt_untranslated)
 
+    avg_len_diff = compute_avg_diff(hyp, avg_len)
+    tot_score += lambdas['avg_len_d'] * avg_len_diff
+
     # Finding the incline for the current param
     incline = r_len_diff
     for feat in feats.split(' '):
@@ -62,6 +66,8 @@ def compute_line(hyp, feats, src_sen, lambdas, param, src_tokens):
             break
     if param == "trans_w":
         incline = -1 * cnt_untranslated
+    if param == "avg_len_d":
+        incline = avg_len_diff
 
     #Computing Line l: param -> score
     return incline, tot_score - lambdas[param]*incline
