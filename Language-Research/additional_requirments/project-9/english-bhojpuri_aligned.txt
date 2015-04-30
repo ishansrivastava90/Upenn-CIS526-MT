@@ -1,0 +1,355 @@
+   1  2   3    4  5  6
+E: Do you have it in writing ?
+A: 1-7 2-2 3-3 3-4 4-1 5-6 6-5 ?
+T: Ee raura ke paas likhit mein ba?
+	1  2     3  4    5      6    7
+
+   1    2     3 	 4 	  5			6	
+E: This will result in tremendous savings .
+A: 1-1 2-5 3-2 5-3 6-4
+T: Ekar parinaam bhaari bachat hoyi
+    1 	2    		3 	4 		5
+
+   1 	2 	    3  4     5  6    7
+E: what exactly is going on over there ?
+A: 1-4 2-2 3-3 4-5 5-6 6,7-1
+T: uhaan asaliyat mein ka chalat ba?
+	1  		2 		3 	4 	5 	  6
+
+   1  2 		3  4
+E: I explained it then .
+A: 1-1 2-4 3-3 4-2
+T: Hum tabbe ee samjhayilin
+B: हम तब्बे ई समझईली
+    1  2  3 4
+
+   1    2  3   4    5
+E: That is not good enough .
+A: 1-1 2,3-4 4-3 5-2
+T: Uu itna nimman nayikhe
+B: ऊ इतना निम्मन नइखे 
+   1  2    3    4
+
+  1 	2 	3   4 		5 	6   7   8    7    8   9
+E: We see the licence fee going up from $25 to $500 .
+A: 1-1 2-3,4 4-3 5-4 6,7-9,12 8-7 7-6 8-9 9-8
+T:Hamni ke dekhat baani license sulk ke $25 se $500 tak jaat. 
+B: हमनी के लाइसेन्स सुल्क के $२५ से $५०० तक जात देखत बानी 
+    1 	2   3      4    5  6  7  8   9  10  11   12
+
+     1   2  3
+E:  Let me conclude .
+A:  1-4 2-1 3-4.
+T:	Hamra ke khatam kare da.
+B: हमरा  के खतम करे दा 
+    1    2  3   4  5
+
+   1 	2  3 		   4   5         6    7      8       9  10   11      12  13   14      15  16   17 
+E: Let us remember , Mr. Speaker , that these segments of  our society  form the backbone of  our economy.
+A: 1-4 2-3 3-5,6 rakkhe ke chahin , 4-2 5-1, 6-9 7-12 8-12 10-14  11-10  14-17,18,19  17-15
+T: Adhyakch mahoday, hamaraa ke yaad rakkhe ke chahin ki samaj ke ee hissa hamaar arthavyawastha ke reedh ki haddi bate.
+B: अध्यक्ष महोदय, हमरा के याद रक्खे के चाहीं की समाज के ई हिस्सा हमार अर्थव्यवस्था के रीढ़ के हड्डी बाटे 
+	1 		2    3   4  5   6    7  8    9   10  11 12 13    14  15        16 17  18  19  20
+
+
+   1     2        3   4       5   6      7   8   9       10  11
+E: Mr. Speaker , my question is directed to the Minister of Transport .
+A: 1-2 2-1, 2-2 4-4 5,6,7-7,8,9 9-6 11-5.
+T: Adhyakch mahoday, hamar sawal parivahan mantri ke khatir ba.
+B: अध्यक्ष महोदय, हमार सवाल परिवहन मंत्री के खातिर बा 
+    1       2    3     4   5    6    7   8    9
+
+
+   1     2     3       4    5  6  7      8    9    10      11 12   13   14
+E: What does $ 35,000 mean for a family where the husband and wife both work ? 
+A: 1-14 2-16 3-12 4-15 5,6-3  7-2 8-4,5 10-7 12-8 13-6 14-9
+T: Aisan parivaar khaatir jekra mein duno marad mehraaroo kaam kare len $35000 ke ka maayna ba?
+B: अइसन  परिवार खातिर जेकरा में दूनो मरद मेहरारू काम करे लें $३५००० के का मायने बा 
+    1 	 2 		3 	4 	  5  6    7  8     9   10  11 12   13  14 15  16
+
+
+    1     2    3    4   5
+E: They need toys and entertainment.
+A: 1-1 2-6 3-3 4-4 5-5
+T: Unhan ke khilauna aur manoranjan chahat ba.
+B: उनहन के खिलौना और मनोरंजन चाहत बा 
+    1    2  3     4  5      6  7
+
+   1     2   3  4     5
+E: There is no action forthcoming .
+A: 1-1 2,3-4,6 4-5 5-7
+T: Ekra ke aage kauno kaam naikhe bachal
+B: एकरा के आगे कौनो काम नइखे बचल 
+    1   2   3   4   5   6    7
+
+   1   2    3 	  4  5   6     7     8   9  10  11    12    13   14  15   16   17     18     19  
+E: If they could not pay their fine and no  one would raise bail for them they simply stayed in.
+A: Agar unka na de saklas khatir jurmaana aur kehu karwayi paulas, unka ke jaile mein rahe ke padal
+T: 1-1 2-2 khaatir kehu 7-5 3,4,5-6,7,8 8-9 9,10-10,12 12-13 13-11, 16-15 18-19 19-18
+B: अगर उनका खातिर केहु जुरमाना  न दे  सकलस  औरो केहु  जमानतो न करवाई पाऊलस , उनका के जेले  में रहे के पड़ल 
+    1  2    3     4    5     6 7    8    9   10    11   12  13   14     15  16  17   18 19 20 21
+
+   1     2    3  4   5
+E: They want to see results . 
+A: 1-1,2 2-7 3-3 4-5 5-4
+T: Unhan logan ke parinaam dekhe ke chahin. 
+B: उनहन लोगन के परिनाम देखे के चाहीं 
+    1    2  3   4    5    6  7
+
+   1      2       3   4      5      6   7   8   9   10   11
+E: Women workers are still confined to most of the job ghettos.
+A: 1-1 2-2 3,4-5  5-7,8  10-4 11-6
+T: Mahila karamcharin ke majdoori abahino basti tak seemit ba.
+B: महिला कर्मचारिन के मजदूरी अबहिनो बस्ती तक सीमित बा 
+	1     2       3   4     5     6   7   8    9
+
+   1  2       3  	4 	5 	6 	7  8   9  10 	   11	
+E: I believe that you will find a way to correct that. 
+A: 1-1 2-3  3-4 4-5 5-13 6-12 8-11 10-8 11-6
+T: hamra ke biswaas ba ke tu okra ke sudhare ke kauno rasta dhoondh leba
+B: हमरा के बिस्वास बा के तू ओकरा के सुधरे के कौनो रास्ता ढूंढ लेबा 
+    1   2 	3 	  3  4  5  6   7  8    9  10   11    12  13
+
+   1   2  	  3    4 		   5   6  7    
+E: It seems that Spiderman's end is near.
+A: 1,2-1,2 3-3 4-4,5 5-6 7-7 
+T: Lagat ba ki ispiderman ke ant najdeek ba
+B: लगत बा के इस्पीडरमैन के अंत नजदीक आ गईल बा 
+	1  2  3  4        5  6  7     8  9  10
+
+   1  2    3    4
+E: I need your help.
+A: 1-1 2-4 3-2 4-3
+T: Humka tohaar madad chahin
+B: हमका तोहार मदद चाहीं 
+	1    2    3   4
+
+   1     2      3   4  5   6
+E: Your mother has met an accident.
+A: 1-1 2-2 3,4-5,6 6-4
+T: Tumhari amma ka accident hoyi gawa.
+B: तुम्हरी  अम्मा का accident होई गवा 
+    1   	2 	3   4        5   6
+
+    1  2   3       4
+E: it is quite understandable .
+A: 1-1  2-5  3,4-2,3,4
+T: ee bhujhe ke baat ba
+    1   2     3   4   5
+
+   1    2   3   4   5    6
+E: He left his wife and family .
+A: 1-1  2-7,8,9  3-2  4-3  5-4  6-5
+T: oo aapan mehraru aur pariwar ke chod ke chal gayil
+    1   2     3      4    5      6   7  8   9    10 
+
+   1   2    3   4   5 
+E: I think that is good .
+A: 1-1  2-2  3-3  4-6  5-5
+T: hum bujhatani ki ee neek ba
+    1     2      3   4   5  6 
+
+   1  2   3   4   5   6   7    8      9   10 
+E: it is our hope to make a decision this week .
+A:  3-1  4-2  6-3  8-10  9-6  10-7
+T: hum aasha kara tani ki ee hufta me khcuhu natiza nikal jayi
+    1    2    3     4   5  6   7    8   9      10     11   12
+
+   1    2     3     4
+E: we accept your view .
+A: 1-3  2-4  3-1  4-2
+T: tohar najariya humen manjoor ba
+     1      2       3     4    5
+
+    1     2     3   4      5   6     7
+E: They fought an election on that position .
+A: 1-1  2-7  4-2  5-6 6-4  7-5
+T: oo chunav mein ee jagahva pe lada rahe
+   1    2      3  4     5    6   7     8 
+
+    1   2  3    4    5
+E: let us see these documents .
+A:  3-4  4-1  5-2
+T: ee kgajawa ke dekha
+    1   2     3   4
+
+
+   1   2   3       4   5 6   7  8
+E:can you believe such a ban in 1978 ?
+  1     2      3      4   5         6    7     8
+T1: maan sakela unnais sau athhattar mein aisan rok?
+T2: eh tarah ka manahi 1978 mein tu soch sakela?
+E-T1: 1-2 3-1 4-7 6-8 7-6 8-3,4,5
+E-T2: 1-9 2-7 3-8 4,5-1,2,3 6-4 8-5 7-6 
+
+
+
+    1   2     3   4  5    6           7  8
+E: we looked at all the implications of that .
+     1    2     3      4   5    6    7       8     9
+T1: okar sajji matlab ke baare mein sochlin hamhan ke. 
+T2: hum log ekre sab parinam ke baare mein sochlin
+E-T1: 1-8 2-7 3,4-2 6-3,4,5 8-1
+E-T2: 1-1,2  2-9 4-4 6-5,6,7 8-3
+
+
+
+    1    2    3   4   5   6      7    8    9    10
+E: they want to pick and choose what they will support .
+A: 1-1,2 2-3 3-4 4,5,6-6,7,8  7-9  9,10-12,13
+T: u log chaahe la ki chun chun ke kauno cheej ke samarthan deehal jaa.
+   1  2   3     4  5   6    7   8   9     10   11  12        13    14
+
+
+
+    1  2   3   4   5  6
+E: do you have it in writing ?
+A: 1,3-3 2-4 3-5 5-2 6-1
+T: likhit mein baa tohre lage?
+     1     2    3    4     5
+
+
+
+    1       2     3        4    5    6  7      8    9  10       11
+E: world - wide inflation is causing a severe form of economic dislocation .
+      1      2    3   4     5       6  7      8          9   10
+T1: duniyaa bhar ka badhat mahngai se arthik bisthaapan hot baa.
+T2: duniyaa bhar ka badhat mahngai arthik bisthaapan ke bahut prabhavit karat baa.
+E-T1: 1-1 2-2    3-4,5  4,5-9,10  10-7 11-8
+E-T2: 1-1 2-2 3-4,5 5-10,11 7-9 10-6 11-7
+
+
+    1    2    3      4  5          6
+E: this will result in tremendous savings .
+A: 1-1,2 2-7 5-4,5 6-6
+T: eh cheej se bahute bhayankar bachat hoi.
+    1   2   3    4     5         6      7
+
+
+     1          2  3   4    5   6   7    8    9      10  11
+E: unfortunately , no one seems to know what its effect will be .
+A: 1-1,2    2-7 3-6 4-3 5-4 6-8,9 7-12 8-11 9-13 10,11-14     
+T: durbhaag se bujhaat baa ki kehu na jaane laa ki ekar kaa asar hoi.
+     1       2   3      4   5  6   7  8      9  10  11   12  13   14
+
+
+
+    1    2   3     4
+E: that is quite substantial .
+A: 1-1 2-2 3-3 4-4,5    
+T: u ta bahute dher baa?
+   1 2   3     4   5
+
+
+
+    1    2       3  4    5   6    7
+E: what exactly is going on over there ?
+      1       2    3   4     5    6
+T1: asaliyat mein kaa chalat baa ohar?
+T2: vastav mein ka hot baa ohar?
+T3: wahan phoore ka hoot baa?
+E-T1: 1-3 2-1,2  3-5 4-4 6,7-6
+E-T2: 1-3 2-1,2 4,5-4,5 7-6
+E-T3: 1-3 2-2 4,5-4,5 7-1
+
+
+    1    2    3   4  5   6   7   8   9  10   11 
+E: they also have a role to play in the food chain .
+     1        2       3    4      5     6   7       8
+T1: Khadya srinkhala mein unhano logan ka bhoomika ba.
+T2: Khadya srinkhala mein unahun ka kaam bai
+T3: khadya srinkhala mein uho kuchh na kuchh kare lein abokhan
+E-T1: 1-4,5 5,6,7-7,8 8-3 10-1 11-2
+E-T2:  1,2,3  3-3 5,6,7-5,6 8-3 10-1 11-2
+E-T3: 1-4 2-5,6,7 5,6,7-8,9,10 8-3 10-1 11-2
+
+
+
+  1    2      3       4   5    6
+E: with great respect , I must interrupt .
+A: 1-4 2-1  3-2   4-5 5-8,9 6-6,7     
+T: bahute sammaan ke saath, hamke dakhal dehin ke padi.
+     1        2     3   4     5     6     7     8   9
+
+   1    2       3   4
+E: i explained it then .
+T1: samjhaule ta rahlin tab.
+T2: ta hum tohen batule rahliN na!
+E-T1: 1-3 2-1,2,3  4-4
+E-T2: 1-2 3-4,5 4-1
+
+  
+    1    2   3   4   5 
+E: that is not good enough .
+     1   2     3          4  5
+T1: ee kauno santosjanak na ba.
+T2: ee kauno thik thak nahin ba.
+E-T1: 1-1 2-5 3-4 4,5-3
+E-T2: 1-1 2-6 3-5 4,5-3,4 
+
+
+    1    2        3    4   5      6   7   8      9 
+E: the Minister spoke of meetings and I applaud that .
+      1     2   3    4  5    6        7  8   9    10       11  12
+T1: mantri ji bhent ka baat bataulein a hum ekar prasansa kare liN.
+T2: mantri ji baithakwan ka baat bataulein a hum ekar prasansa kare liN.
+T3: mantri ji baithakwan ka baat bataulein a hum thapodi bajauliN
+E-T1: 2-1,2  3-5,6  5-3  6-7  7-8  8-10,11  9-9
+E-T2: 2-1,2  3-5,6  5-3  6-7  7-8  8-10,11  9-9
+E-T3:  2-1,2  3-5,6  5-3  6-7  7-8  8-9,10
+
+
+    1    2       3          4       5         6    7
+E: the retired scientist suspected something was asmiss.
+A: 2-1 3-2 4-4,5 5-7 6-9 7-8
+T: retire baigyanik ke sak rahal ki kuchh gadbad ba.
+    1       2        3   4  5    6    7   8      9 
+
+
+    1  2  3        4     5  6  7  8  9          10 11  12  13 14
+E: If a candidate wants to go for a government job he can do so.
+A: 1-1 2,3-2  4-5 9-3 10-4 11-6 12,13,14-7
+T: Jaun ummedwar sarkari naukri chahe te kare.
+      1    2        3     4       5     6  7
+
+
+   1   2   3     4   5   6   7    8  
+E: It is useful to have done some math.
+A: 1,2-7 3-6 4,5,6-3,4  7-1 8-2 
+T: Kuchh ganit padhle ba ta phayda ba.
+    1     2     3     4  5   6     7
+
+
+
+   1  2  3   4   5    6
+E: I am sick of such shows.
+A: 1-5 3-6,7 5-1 6-2,3
+T: Aisan TV karyakram se hum paresan ho gayilin.
+     1     2    3       4   5    6   7    8
+ 
+
+
+    1    2     3  4  5   6    7   8   9
+E: Dad makes such a big deal out of everything.
+A: 1-1,2 2-7,8 5 5,6-6 9-3
+T: Babu ji har baate ka batangan banawe leiN.
+    1   2  3  4    5   6        7     8
+
+
+    1     2   3       4
+E: They have global clout
+A: 1-1 2-4,6 3-2,3 4-5
+T: Unkar poori duniya mein dabdaba ba.
+    1     2     3      4    5      6
+    
+
+
+    1  2   3    4    5  6   7    8   9    10    11
+E: He is very good at sweet talk but is quite pernicious. 
+     1           2     3    4     5      6   7 
+T1: Batiyawela bahut meeth lekin bahut chaee ba.
+T2: Batiyawela bahut meeth lekin bahut dusht ba.
+T3: Batiyawela bahut meeth lekin bahut badmas ba.
+E-T1: 1-1 3-2 5-3 7-1 8-4 10-5 11-6
+E-T2: 1-1 3-2 5-3 7-1 8-4 10-5 11-6
+E-T3: 1-1 3-2 5-3 7-1 8-4 10-5 11-6

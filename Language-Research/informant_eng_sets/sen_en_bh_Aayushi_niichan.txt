@@ -1,0 +1,184 @@
+
+   1   2   3       4   5 6   7  8
+S:can you believe such a ban in 1978 ?
+	1     2      3      4   5         6    7     8
+T1: maan sakela unnais sau athhattar mein aisan rok?
+T2: eh tarah ka manahi 1978 mein tu soch sakela?
+S-T1: 1-2 3-1 4-7 6-8 7-6 8-3,4,5
+S-T2: 1-9 2-7 3-8 4,5-1,2,3 6-4 8-5 7-6 
+
+
+
+    1   2     3   4  5    6           7  8
+S: we looked at all the implications of that .
+     1    2     3      4   5    6    7       8     9
+T1: okar sajji matlab ke baare mein sochlin hamhan ke. 
+T2: hum log ekre sab parinam ke baare mein sochlin
+S-T1: 1-8 2-7 3,4-2 6-3,4,5 8-1
+S-T2: 1-1,2  2-9 4-4 6-5,6,7 8-3
+
+
+
+    1    2    3   4   5   6      7    8    9    10
+S: they want to pick and choose what they will support .
+    1  2   3     4  5   6    7   8   9     10   11  12        13    14
+T1: u log chaahe la ki chun chun ke kauno cheej ke samarthan deehal jaa.
+S-T1: 1-1,2 2-3 3-4 4,5,6-6,7,8  7-9  9,10-12,13
+
+
+
+    1  2   3   4   5  6
+S: do you have it in writing ?
+T1: likhit mein baa tohre lage?
+S-T1: 1,3-3 2-4 3-5 5-2 6-1
+
+
+
+    1       2     3        4    5    6  7      8    9  10       11
+S: world - wide inflation is causing a severe form of economic dislocation .
+
+      1      2    3   4     5       6  7      8          9   10
+T1: duniyaa bhar ka badhat mahngai se arthik bisthaapan hot baa.
+T2: duniyaa bhar ka badhat mahngai arthik bisthaapan ke bahut prabhavit karat baa.
+S-T1: 1-1 2-2    3-4,5  4,5-9,10  10-7 11-8
+S-T2: 1-1 2-2 3-4,5 5-10,11 7-9 10-6 11-7
+
+
+    1    2    3      4  5          6
+S: this will result in tremendous savings .
+     1    2   3   4     5         6      7
+T1: eh cheej se bahute bhayankar bachat hoi.
+S-T1: 1-1,2 2-7 5-4,5 6-6
+
+
+
+     1 			    2  3   4    5   6   7    8    9      10  11
+S: unfortunately , no one seems to know what its effect will be .
+     1       2   3      4   5  6   7  8      9  10  11   12  13   14
+T1:durbhaag se bujhaat baa ki kehu na jaane laa ki ekar kaa asar hoi.
+S-T1: 1-1,2    2-7 3-6 4-3 5-4 6-8,9 7-12 8-11 9-13 10,11-14
+
+
+
+    1    2   3     4
+S: that is quite substantial .
+    1 2   3     4   5
+T1:u ta bahute dher baa?
+S-T1: 1-1 2-2 3-3 4-4,5
+
+
+
+    1    2       3  4    5   6    7
+S: what exactly is going on over there ?
+      1       2    3   4     5    6
+T1: asaliyat mein kaa chalat baa ohar?
+T2: vastav mein ka hot baa ohar?
+T3: wahan phoore ka hoot baa?
+S-T1: 1-3 2-1,2  3-5 4-4 6,7-6
+S-T2: 1-3 2-1,2 4,5-4,5 7-6
+S-T3: 1-3 2-2 4,5-4,5 7-1
+
+
+    1    2    3   4  5   6   7   8   9  10   11 
+S: they also have a role to play in the food chain .
+     1        2       3    4      5     6   7       8
+T1: Khadya srinkhala mein unhano logan ka bhoomika ba.
+T2: Khadya srinkhala mein unahun ka kaam bai
+T3: khadya srinkhala mein uho kuchh na kuchh kare lein abokhan
+S-T1: 1-4,5 5,6,7-7,8 8-3 10-1 11-2
+S-T2:  1,2,3  3-3 5,6,7-5,6 8-3 10-1 11-2
+S-T3: 1-4 2-5,6,7 5,6,7-8,9,10 8-3 10-1 11-2
+
+
+
+	1    2      3       4   5    6
+S: with great respect , I must interrupt .
+     1        2     3   4     5     6     7     8   9
+T1: bahute sammaan ke saath, hamke dakhal dehin ke padi.
+S-T1 1-4 2-1  3-2   4-5 5-8,9 6-6,7
+
+
+
+   1    2       3   4
+S: i explained it then .
+T1: samjhaule ta rahlin tab.
+T2: ta hum tohen batule rahliN na!
+S-T1: 1-3 2-1,2,3  4-4
+S-T2: 1-2 3-4,5 4-1
+
+  
+    1    2   3   4   5 
+S: that is not good enough .
+     1   2     3          4  5
+T1: ee kauno santosjanak na ba.
+T2: ee kauno thik thak nahin ba.
+S-T1: 1-1 2-5 3-4 4,5-3
+S-T2: 1-1 2-6 3-5 4,5-3,4 
+
+
+    1    2        3    4   5      6   7   8      9 
+S: the Minister spoke of meetings and I applaud that .
+      1     2   3    4  5    6        7  8   9    10       11  12
+T1: mantri ji bhent ka baat bataulein a hum ekar prasansa kare liN.
+T2: mantri ji baithakwan ka baat bataulein a hum ekar prasansa kare liN.
+T3: mantri ji baithakwan ka baat bataulein a hum thapodi bajauliN
+S-T1: 2-1,2  3-5,6  5-3  6-7  7-8  8-10,11  9-9
+S-T2: 2-1,2  3-5,6  5-3  6-7  7-8  8-10,11  9-9
+S-T3:  2-1,2  3-5,6  5-3  6-7  7-8  8-9,10
+
+
+    1    2       3          4       5         6    7
+S: the retired scientist suspected something was asmiss.
+     1       2        3   4  5    6    7   8      9
+T1: retire baigyanik ke sak rahal ki kuchh gadbad ba.
+ S-T1: 2-1 3-2 4-4,5 5-7 6-9 7-8
+
+
+    1  2  3        4     5  6  7  8  9          10 11  12  13 14
+S: If a candidate wants to go for a government job he can do so.
+      1    2        3     4       5     6  7
+T1: Jaun ummedwar sarkari naukri chahe te kare.
+S-T1: 1-1 2,3-2  4-5 9-3 10-4 11-6 12,13,14-7
+
+
+   1   2   3     4   5   6   7    8  
+S: It is useful to have done some math.
+      1     2     3     4  5   6     7
+T1: Kuchh ganit padhle ba ta phayda ba.
+S-T1:1,2-7 3-6 4,5,6-3,4  7-1 8-2 
+
+
+
+   1  2  3   4   5    6
+S: I am sick of such shows.
+     1     2    3       4   5    6   7    8
+T1: Aisan TV karyakram se hum paresan ho gayiliN.
+S-T1: 1-5 3-6,7 5-1 6-2,3
+ 
+
+
+    1    2     3  4  5   6    7   8   9
+S: Dad makes such a big deal out of everything.
+      1   2  3  4    5   6        7     8
+T1: Babu ji har baate ka batangan banawe leiN.
+S-T1: 1-1,2 2-7,8 5 5,6-6 9-3
+
+
+
+    1     2   3       4
+S: They have global clout
+      1     2     3      4    5      6
+T1: Unkar poori duniya mein dabdaba ba.
+S-T1: 1-1 2-4,6 3-2,3 4-5
+    
+
+
+    1  2   3    4    5  6   7    8   9    10    11
+S: He is very good at sweet talk but is quite pernicious. 
+     1           2     3    4     5      6   7 
+T1: Batiyawela bahut meeth lekin bahut chaee ba.
+T2: Batiyawela bahut meeth lekin bahut dusht ba.
+T3: Batiyawela bahut meeth lekin bahut badmas ba.
+S-T1: 1-1 3-2 5-3 7-1 8-4 10-5 11-6
+S-T2: 1-1 3-2 5-3 7-1 8-4 10-5 11-6
+S-T3: 1-1 3-2 5-3 7-1 8-4 10-5 11-6

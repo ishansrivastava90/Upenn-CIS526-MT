@@ -1,2 +1,3 @@
 The link for the md online editor
-http://socrates.io/#CigvQSy
+Core-Requirements - http://socrates.io/#CigvQSy
+Report - http://socrates.io/#NkJs0Qi
