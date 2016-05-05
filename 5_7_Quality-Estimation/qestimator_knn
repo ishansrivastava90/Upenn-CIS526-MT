@@ -1,0 +1,59 @@
+#!/usr/bin/env python
+import optparse
+import sys
+from collections import defaultdict
+import numpy as np
+import cv2
+import math
+import operator
+def estimate_quality(source, target, train_feat, test_feat, train_score):
+
+    #Set the weights
+    weights = []
+    #print len(features[0])
+    #for ind in xrange(0,len(features[0])):
+    #    print ind
+        #weights[ind] = 1
+
+    train_data = np.asarray(train_feat).astype(np.float32)
+    train_label = np.asarray(train_score).astype(np.float32)
+
+    knn = cv2.KNearest()
+    knn.train(train_data,train_label,maxK=1200)
+
+
+    for feat in test_feat[0:]:
+    	final_result = {}
+        test_data = np.asarray([feat]).astype(np.float32)
+        ret, results, neighbours ,dist = knn.find_nearest(test_data, 59)
+	
+	for ind in xrange(0,len(neighbours[0])):
+	    if neighbours[0][ind] not in final_result.keys():
+		final_result[neighbours[0][ind]] = float(1)#/(dist[0][ind])
+	    else:
+		final_result[neighbours[0][ind]] += float(1)#/(dist[0][ind])
+	sorted_res = sorted(final_result.iteritems(), key=operator.itemgetter(1), reverse=True)
+	print int(sorted_res[0][0])
+
+
+if __name__=="__main__":
+    optparser = optparse.OptionParser()
+    optparser.add_option("-c", "--score", dest="score_train", default="data-train/es-en_score.train", help="Score train set")
+    optparser.add_option("-s", "--source", dest="source_train", default="data-train/es-en_source.train", help="Scourse train set")
+    optparser.add_option("-t", "--target", dest="target_train", default="data-train/es-en_target.train", help="Target train set")
+    optparser.add_option("-f", "--features", dest="feature_train", default="data-train/train_features", help="Feature train set")
+    optparser.add_option("-q", "--test_features", dest="feature_test", default="data-test/test_features", help="Feature test set")
+
+    (opts, _) = optparser.parse_args()
+
+    score = [[float(s.strip())] for s in open(opts.score_train).readlines()]
+    source = [s.strip() for s in open(opts.source_train).readlines()]
+    target = [s.strip().split() for s in open(opts.target_train).readlines()]
+    features = [[f for f in s.strip().split()[:2]] + [f for f in s.strip().split()[3:5]]+ [f for f in s.strip().split()[-3:-2]] for s in open(opts.feature_train).readlines()]
+    test_features = [[f for f in s.strip().split()[:2]]+ [f for f in s.strip().split()[3:5]]+ [f for f in s.strip().split()[-3:-2]] for s in open(opts.feature_test).readlines()]
+
+    #print features[0],len(features[0])
+    #print test_features[0]
+    estimate_quality(source, target, features, test_features, score)
+
+    #print features[0],len(features[0])
