@@ -1,0 +1,40 @@
+#!/usr/bin/env python
+import optparse
+import numpy as np
+import sys
+from scipy.spatial.distance import cosine
+
+
+if __name__ == "__main__":
+    optparser = optparse.OptionParser()
+    optparser.add_option("-l", "--langfile", dest="langfile", default="data-train/selected_langs", help="File containing all possible languages in set")
+    optparser.add_option("-g", "--goldfile", dest="goldfile", default="data-dev/hidden/dev-meta", help="Metadata file")
+    opts = optparser.parse_args()[0]
+
+    ## Get correct language order
+    language_order = sorted([l.strip() for l in open(opts.langfile, 'rU')])
+
+    ## Read gold data document vectors
+    docvecs = {}
+    for line in open(opts.goldfile, 'rU'):
+        d, _, _, lang, bytes = line.strip().split(',')
+        if d not in docvecs:
+            docvecs[d] = np.zeros(len(language_order))
+        docvecs[d][language_order.index(lang)] = float(bytes)
+    ## Normalize
+    for y in docvecs:
+        docvecs[y] = docvecs[y] / sum(docvecs[y])
+
+    ## Read predictions
+    cos_sims = []
+    for line in sys.stdin:
+        d, vals = line.strip().split(' ||| ')
+        if d not in docvecs: # added by Mitchell
+            continue
+        if vals[0] == '0':  # ignore first line
+            yhat = np.array([float(v) for v in vals.split(',')])
+            # Bug fix, scipy.spatial.distance is 1 - cosine similarity
+            cos_sims.append(1-cosine(docvecs[d], yhat))
+
+    ## Take average cosine similarity
+    print "Average cosine similarity:", sum(cos_sims)/len(cos_sims)
